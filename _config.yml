@@ -23,6 +23,9 @@ theme: minima
 plugins:
  - jekyll-feed
 
+katex:
+  path_to_js: "_katex/katex.min.js"
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
@@ -36,6 +39,7 @@ exclude:
   - vendor/ruby/
   - README.md
   - local.sh
+  - assets/katex.min.js
 
 # Defaults.
 defaults:
