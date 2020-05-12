@@ -39,7 +39,8 @@ exclude:
   - vendor/ruby/
   - README.md
   - local.sh
-  - assets/katex.min.js
+  - production.sh
+  - publish.sh
 
 # Defaults.
 defaults:
