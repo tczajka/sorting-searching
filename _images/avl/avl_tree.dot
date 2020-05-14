@@ -1,0 +1,17 @@
+digraph AVL {
+  root [label=""];
+  a [label=""];
+  b [label=""];
+  c [label=""];
+  node [shape=box];
+  { rank=same; 3 -> 6 -> 9 -> 10 -> 12 [style=invis] }
+  edge [dir=none];
+  root -> a;
+  root -> b;
+  a -> 3;
+  a -> c;
+  c -> 6;
+  c -> 9;
+  b -> 10;
+  b -> 12;
+}
