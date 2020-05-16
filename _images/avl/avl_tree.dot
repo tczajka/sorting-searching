@@ -1,8 +1,8 @@
 digraph AVL {
-  root [label=""];
-  a [label=""];
-  b [label=""];
-  c [label=""];
+  root [label="3"];
+  a [label="3"];
+  b [label="10"];
+  c [label="6"];
   node [shape=box];
   { rank=same; 3 -> 6 -> 9 -> 10 -> 12 [style=invis] }
   edge [dir=none];
