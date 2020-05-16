@@ -1,0 +1,36 @@
+digraph Merge {
+  edge [dir=none];
+  node [fontsize=12];
+  nodesep=0.4;
+  A [shape="triangle", width=1, height=1.5, label="h-2"]
+  B [label="h"];
+  Bl [label="h-1"];
+  Bll [shape="triangle", width=1, height=1.5, label="h-3..h-2"];
+  Blr [shape="triangle", width=1, height=1.5, label="h-3..h-2"];
+  Br [shape="triangle", width=1, height=1.5, label="h-2"];
+  B -> Bl;
+  Bl -> Bll:n;
+  Bl -> Blr:n;
+  B -> Br:n;
+  C [label="h"];
+  Cl [label="h-1"];
+  Cll [shape="triangle", width=1, height=1.5, label="h-2"];
+  Clr [shape="triangle", width=1, height=1.5, label="h-3..h-2"];
+  Cr [label="h-1"];
+  Crl [shape="triangle", width=1, height=1.5, label="h-3..h-2"];
+  Crr [shape="triangle", width=1, height=1.5, label="h-2"];
+  C -> Cl;
+  C -> Cr;
+  Cl -> Cll:n;
+  Cl -> Clr:n;
+  Cr -> Crl:n;
+  Cr -> Crr:n;
+  breakL [label="", style=invis, width=0.1];
+  breakR [label="", style=invis, width=0.1];
+  { rank=same;
+    A -> Bll -> Blr -> Br -> breakL [style=invis];
+    breakL -> breakR [dir=forward];
+    breakR -> Cll -> Clr -> Crl -> Crr [style=invis];
+  }
+}
+

@@ -1,0 +1,24 @@
+digraph Merge {
+  edge [dir=none];
+  node [fontsize=12];
+  nodesep=0.4;
+  A [shape="triangle", width=1, height=1.5, label="h-2"]
+  B [label="h"];
+  Bleft [shape="triangle", width=1, height=1.8, label="h-1"];
+  Bright [shape="triangle", width=1, height=1.5, label="h-2"];
+  B -> Bleft:n;
+  B -> Bright:n;
+  C [label="h"];
+  Cleft [shape="triangle", width=1, height=1.5, label="h-2"];
+  Cright [shape="triangle", width=1, height=1.8, label="h-1"];
+  C -> Cleft:n;
+  C -> Cright:n;
+  D [shape="triangle", width=1, height=1.5, label="h-2"];
+  breakL [label="", style=invis, width=0.2];
+  breakR [label="", style=invis, width=0.2];
+  { rank=same;
+    A -> Bleft -> Bright -> breakL [style=invis];
+    breakL -> breakR [dir=both];
+    breakR -> Cleft -> Cright -> D [style=invis]; }
+}
+

@@ -1,0 +1,20 @@
+digraph Merge {
+  edge [dir=none];
+  node [fontsize=12];
+  nodesep=0.3;
+  A [shape="triangle", width=1, height=1.5, label="A\n0..h-2"]
+  B [label="B\nh"];
+  Bleft [shape="triangle", width=1, height=1.5, label="left B\nh-2..h-1"];
+  Bright [shape="triangle", width=1, height=1.5, label="right B\nh-2..h-1"];
+  B -> Bleft:n;
+  B -> Bright:n;
+  ABleft [shape="triangle", width=1, height=1.5, label="A + left B\nh-2..h"];
+  Brightafter [shape="triangle", width=1, height=1.5, label="right B\nh-2..h-1"];
+  breakL [label="", style=invis, width=0.2];
+  breakR [label="", style=invis, width=0.2];
+  { rank=same;
+    A -> Bleft -> Bright -> breakL [style=invis];
+    breakL -> breakR [dir=forward];
+    breakR -> ABleft -> Brightafter [style=invis]; }
+}
+
