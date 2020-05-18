@@ -35,7 +35,7 @@ To minimize first-player advantage, "swap rule" is employed. One player makes th
 three moves (black, white, black), and the other player may choose to continue with white, or swap
 colors.
 
-## Example game
+## Example game one
 
 Take a look at an [example game](https://www.codecup.nl/showgame.php?ga=154808)
 played between OOOOO (black) and Leopold Tschanter's "ltgmk" (white).
@@ -76,22 +76,120 @@ essential to be able to find such sequences and defend against opponent's sequen
 
 ## Threats
 
+We categorize threats as follows:
+* Winning threats. There are fives and open fours.
+* Forcing threats, i.e. opponent must respond. These are: simple fours, open threes, and broken threes.
+* Non-forcing threats. These don't require the opponent to respond, but may become forcing threats
+  later when additional stones are added.
+
+Threats can also be ordered, by their severity:
+* Fives.
+* Fours.
+* Threes.
+This ordering is useful when thinking about counter-threats later. Instead of answering a forcing
+threat, one may counter with a more severe counter-threat.
+
 ### Five
+
+![fives](/assets/images/gomoku/fives.png)
+
+Fives are pretty self-explanatory. You immediately make five in a row and win. 1, 2, 3 are fives.
 
 ### Open four
 
+![open fours](/assets/images/gomoku/open_fours.png)
+
+A standard open four threat looks is a play like 1. Black has no defense. If black plays at a, white
+plays at b. If black plays at b, white plays at a. The only way to salvage the game for black would
+be to play a more severe counter-threat elsewhere, i.e. a five!
+
+But 1 is not he only pattern like that. 2 and 3 work exactly the same way. They also create two
+ways for white to finish the game. Even though they involve 6 and 7 stones rather than 4, I also
+call such equivalent patterns "open fours".
+
 ### Simple four
+
+![simple fours](/assets/images/gomoku/simple_fours.png)
+
+A simple four is a forcing threat, threatening a five next move, but only in one way. It doesn't
+necessarily win, but forces a response.
+White plays at 1 or 2, black has to respond at a (or play a more severe threat, i.e. a five).
 
 ### Open three
 
+![open threes](/assets/images/gomoku/open_threes.png)
+
+The most common open three is play at 1: three in a row, with two empty spaces on each side. Black has
+to defend at b or c (or play a four-threat elsewhere). Otherwise, white will make an open four at
+b or c and win.
+
+Open three is a special kind of threat in that four empty spaces are required, but only two of them
+are valid defenses for black. For instance, if black tries to defend at a, white still makes an open
+four at c and wins.
+  
+This will be relevant later, when we talk about sequences of threat:
+we have to make sure that a and d are still empty when this threat is played, even though black can't
+defend there. 
+
+And again, there are other patterns like 2 and 3 above that we call "open threes" even though they
+involve more than three white stones. The defining characteristic is that there are four
+empty spaces of which white needs to fill any two consecutive ones to win.
+
+The last pattern is my favorite. It plays a role in example game 2 below.
+
 ### Broken three
+
+![broken threes](/assets/images/gomoku/broken_threes.png)
+
+Finally we come to the weakest type of forcing threat, but perhaps the most common one: a broken
+three.  Here only three empty spots are involved. Black can defend at any one of them, otherwise
+white will make an open four at b.
 
 ### Non-forcing threats
 
-## Another game
+All types of threats can be described by two numbers: {% latex %}(a,b){% endlatex %} where
+{% latex %} 1 \le a \le 5 {% endlatex %} is the threat severity (we already have a stones out of 5),
+and {% latex %} 1 \le b \le 6-a {% endlatex %} is the number of possible ways to make a five.
 
-Funny pattern:
-https://www.codecup.nl/showgame.php?ga=154884
+So all the threats types are as follows:
+
+* Winning threats:
+  * (5, 1): five
+  * (4, 2): open four
+* Forcing threats:
+  * (4, 1): simple four
+  * (3, 3): open three
+  * (3, 2): broken three
+* Non-forcing threats:
+  * (3, 1): simple three
+  * (2, 4), (2, 3), (2, 2), (2, 1): a two that can be completed in 4, 3, 2, 1 ways respectively
+  * (1, 5), (1, 5), (1, 3), (1, 2), (1, 1): a one that can be completed in 5, 4, 3, 2, 1 ways respectively
+* No threat at all
+
+![other threats](/assets/images/gomoku/other_threats.png)
+
+All the above are non-forcing threats. Play at 1 is (3, 1), i.e. a simple three. Play at 2 is a (2, 3),
+a two that can be completed in 3 ways. Play at 3 is not a threat at all, because it can't make five
+in a row in this direction.
+
+## Example game 2
+
+Let's look at [another game](https://www.codecup.nl/showgame.php?ga=154884) from the tournament.
+OOOOO plays black versus Sjoerd Hemminga's SjoerdsGomokuPlayer playing white.
+
+The final forcing sequence that OOOOO employed looks like this:
+
+![game 2](/assets/images/gomoku/game2.png)
+
+Black plays a diagonal broken three at 1, white defends at 2. Black plays another diagonal broken
+three at 3, white defends at 4. Black plays a horizontal open three at 5, black defends at 6.
+
+And now comes a pretty double-threat at 7. A standard vertical broken three, and a nice non-standard
+horizontal "open three" consisting of four stones, all separated by empty spaces.
+
+White defends the vertical threat at 8, and black converts the undefended horizontal "open three"
+into a non-standard "open four" (actually consisting of five stones) with 9. White defends one
+of the two spots at 10, and black finishes the job at 11.
 
 ## All-defenses trick
 
