@@ -1,0 +1,14 @@
+digraph D {
+  1 [label="broken three 1"];
+  3 [label="broken three 3"];
+  13 [label="combination", shape="box"];
+  5 [label="open four 5"];
+  1 -> 13;
+  3 -> 13;
+  13 -> 5;
+  5 -> victory;
+  victory [shape="box"];
+  a [label="some other open three"];
+  b [label="simple four"];
+  a -> b;
+}

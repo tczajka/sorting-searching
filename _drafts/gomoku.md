@@ -35,7 +35,7 @@ To minimize first-player advantage, "swap rule" is employed. One player makes th
 three moves (black, white, black), and the other player may choose to continue with white, or swap
 colors.
 
-## Example game one
+## Example game 1
 
 Take a look at an [example game](https://www.codecup.nl/showgame.php?ga=154808)
 played between OOOOO (black) and Leopold Tschanter's "ltgmk" (white).
@@ -191,29 +191,268 @@ White defends the vertical threat at 8, and black converts the undefended horizo
 into a non-standard "open four" (actually consisting of five stones) with 9. White defends one
 of the two spots at 10, and black finishes the job at 11.
 
-## All-defenses trick
-
-## Dependency-based search
-
-## Counter-threats and refutations
-
-## Defenses to potential threat sequences
-
 ## Precomputed patterns
+
+My bot has a lot of things precomputed, to enable a quick recognition of threat patterns.
+
+There are 16 types of threats (from no threat to a five). There are a total of 65 patterns.
+For each pattern we have a set of squares that must be occupied, the set of squares that must be
+empty, and possible defenses.
+
+For each line length from 5 to 16, and for each pattern of opponent stones on that line, we precompute
+how the line is split into sub-lines by opponent stones. Any threat has to be contained within
+a sub-line.
+
+For each sub-line length from 5 to 16, and for each pattern of our stones, we precompute what threat
+patterns are available within the subline.
+
+Using these tables we can quickly look up threats available on the board for each player.
+
+## Static evaluation
+
+My static evaluation of a board position is very simple. I tried some simple machine learning, but
+ended up just using a simple hand-made formula that works reasonably well.
+
+For each player, and for each empty intersection of the board, I look at what threats are available
+for that player at this intersection in the four direction. I take two best threats, and assign them
+numbers from 0 (no threat) to 16 (immediate five) based on the threat type.
+
+If the two best threats at intersection i have values {% latex %} a_i {% endlatex %} and {% latex %}
+b_i{% endlatex %}, my evaluation for one side is:
+
+{% latex centred %}
+\sum_{i\in\text{empty}} (1.5 \cdot 1.8^{a_i} + 1.8^{b_i})
+{% endlatex %}
+
+Total static evaluation is the difference of single-side evaluations, plus a bonus for the side to
+move.
 
 ## Board representation
 
+We want the board representation to be a data structure that supports some important operations
+efficiently:
+* See if the game is over and who won.
+* Make a move.
+* Un-make a move (to support recursive game tree search).
+* Compute the static evaluation.
+* Find all winning or forcing threats for each player (to start the search for a winning threat sequence).
+
+Our board representation consists of:
+* Rotated bitboards.
+* Threat Boards.
+* Incremental static evaluation.
+
 ### Rotated bitboards
 
-### Immediate threats
+A bitboard is a sequence of 16x16 = 256 bits. We could represent the board as two bitboards: one
+for black stones and one for white stones.
+
+We add redundancy so that we can easily extract patterns of bits corresponding to lines on the board.
+For each player we store the board in four copies, rotated by 0, 90, 45 and 135 degrees. So we have:
+* A row-major bitboard, where intersection in the same row are consecutive.
+* A column-major bitboard, where intersection in the same column are consecutive.
+* A NW-SE bitboard, where intersections in the same NW-SE diagonal are consecutive.
+* A NE-SW bitboard, where intersections in the same NE-SW diagonal are consecutive.
+
+### Threat Boards
+
+For each player we maintain a Threat Board. A Threat Board contains information about each square
+in each direction. For empty intersections, we store the current threat pattern available in that square.
+
+Every time we make or un-make a move, we update all threats in the neighborhood. We look up the pattern
+in each direction in our precomputed tables, and update all threats nearby. We have to go a distance
+of 4 in each direction, so we only have to update 8 * 4 = 32 nearby intersections.
+
+### Incremental static evaluation
+
+We maintain the static evaluation. Every time the current threat available at an intersection is updated,
+we recompute the score for that intersection, and update the total sum of these scores. This way we
+have the score always available without having to recompute it for the whole board.
+
+We also keep track of whether the game is already over, so we can answer that question immediately.
+
+## Threat sequence search
+
+This is the central and most compute-intensive part of the whole program. Every time we encounter
+a new position, we want to be able to tell whether there exists a winning combination of threats
+for the player to move. We also want to be able to tell whether there exists a winning combination
+of threats for the other player, and if so, how the current player can defend against it. In the
+tree search we will only consider those moves that defend against such combinations.
+
+The algorithm for finding these threat sequences is inspired by the Ph.D. thesis of Victor Allis,
+"Searching for solutions in games and artificial intelligence."[^allis]
+
+### All-defenses trick
+
+Consider a threat sequence like this:
+
+![threat sequence](/assets/images/gomoku/threat_sequence.png)
+
+White first plays a horizontal broken three at 1. Black can defend it at any of the three points
+marked as 2. Now white plays another horizontal broken three at 3, and again black can defend it
+at any of the three points marked as 4. Finally, white plays a vertical open four at 5 and wins the
+game next move.
+
+If we were to search the game tree in a straighforward way, there are 9 different combinations here,
+because black can defend the first threat 3 ways, and the second threat 3 ways. But all of them
+are very similar, it's essentially the same sequence.
+
+We avoid checking all these combinations separately by using the trick discovered by Victor Allis.
+When searching for a winning threat sequence for white, we simply assume that black is allowed to
+play **all** the defenses to a single threat at once!
+
+So above we simply say: first we play the first threat, which adds a white stone at 1 and three black
+stones at 2, 2, 2. Then we play the second threat, which adds a white stone at 3 and three black stones at
+4, 4, 4. Then we play the final game-winning threat at 5.
+
+This trick avoids some of the combinatorial explosion of the number of cases, and makes the threat
+search a single-player game.
+
+### Dependency-based search
+
+Another way to reduce the number of combinations to look through is to notice that in the combination
+above, the order of the first two threats doesn't matter. We could play 1 first, or we could play 3
+first. But we don't need to check both options separately.
+
+This algorithm is again due to Victor Allis' Ph.D. thesis[^allis].
+
+![dependency-based search](/assets/images/gomoku/db_search.png)
+
+Instead of searching for sequences of threats, we search the dependency graph of threats.
+
+In the example above, threat 5 depends on threats 1 and 3.
+
+We start from all immediate threats. For each threat node, we look at whether new threats are enabled
+by this threat, and create those nodes.
+
+We also combine threats on a single line (such as 1 and 3) into "combination nodes", and look for
+new threats that are created as a result of such combination.
+
+Before we create a combination node we check whether the two threats that we are combining, and their
+dependencies, do not interfere with each other (i.e. reuse the same squares).
+
+When combining threats, special care is taken for open threes. An open three allows only two defense
+points, but requires two additional intersections to be empty when the threat is executed. These empty
+intersections can later be used for other threats. This creates an additional ordering dependency
+between open threes and other threats. When combining threats, we use **topological sorting** to see
+whether we can order threats so that these ordering dependencies are satisfied.
+
+We thus build a directed acyclic graph of these threat nodes and combination nodes, until we run out of
+possibilities, or we find a game-winning threat (open four or five).
+
+### Counter-threats and refutations
+
+If only things could be that simple...
+
+Imagine we found the following threat sequence:
+
+![almost good](/assets/images/gomoku/almost_good.png)
+
+White plays a horizontal broken three at 1 (it's not an open three due to the presence of a black
+stone), then a vertical broken three at 3, then a horizonal open four at 5, which wins.
+
+But this doesn't work. Black can use the left-most 2 as a defense to 1. Then, after white plays the
+threat at 3, black ignores the threat, and instead plays a more severe counter-threat at **a** creating
+an open four and winning the game!
+
+This is a refutation of a threat sequence. But playing out its own threats, white helps black set up
+counter-threats that ultimately defeat the threat sequence.
+
+There are two ways a threat sequence can be refuted by counter-threats:
+* The defender may win with his own counter-threats.
+* The defender may use his counter-threats to place a stone at a spot where it interferes with the original
+  threat sequence.
+
+After finding a threat sequence with the dependency-based search, we run another dependency-based search,
+this time for defender's counter-threats, to see if we can find a refutation. Differences from a regular search are:
+* We look at counter-threats after each move of the original threat sequence. These may combine with
+  counter-threats made earlier in the threat sequence.
+* We only consider counter-threats that are more severe than the original threat.
+* We declare victory for the defender when either he wins or manages to interfere with the original
+  threat sequence.
+* We don't consider refutations to refutations recursively. Instead, if we find a potential refutation,
+  we just conservatively assume that it works.
 
 ## Principal variation search
 
+As a main game tree search algorithm, we use Principal Variation Search, which is a variant of
+alpha-beta prunning. In each node we run dependency-based search to see if a threat sequence is
+available, and also whether the current player has to defend against opponent's possible threat sequence.
+
+### Defenses to potential threat sequences
+
+In each node of the tree search, we run dependency-based search for the opponent of the player to
+move, to see if there is a potential danger we have to defend against.
+
+If there is, we first determine the set of moves that defend against the danger.
+
+We augment the dependency-based search algorithm to also return all moves that could potentially be
+defensive moves. These are:
+* all intersections that are part of the threat sequence, and
+* all intersections that create additional counter-threats for the defender in the refutation search
+
+Once we have this set of potential defenses, we try each one in turn, and again run the threat
+search for the other player.
+* If the threat search now returns no attack for the opponent, we have found a valid defense, so we add
+  it to the set of valid defenses.
+* If it does return a threat sequence, then this potential defense doesn't work. But also this generates
+  another set of potentially valid defenses. A defense that works has to work against all threat sequences,
+  so we take the intersection of the two sets of potential defenses.
+
+We continue this until we have converged on the set of defensive moves that work. This set could be
+empty, which means that the position is lost, and we can score the node in the tree.
+
+It it is not empty, we only consider those moves that are valid defenses as children of the tree node.
+
 ### Null move forward prunning
 
-## Evaluation
+Some moves don't create any potential threats. Often these are weak moves. We want to try to prune
+these from the search tree.
+
+The way this is implemented is similar to the null-move heuristic often used in chess programs.
+
+If in a node there is no threat sequence for the opponent, there is no immediate danger. In that case,
+we first try a **null move**, i.e. no move at all, and run a shallower search. If this shallow search
+returns a good score (a beta-cut in the alpha-beta algorithm), we assume that this position is really
+good for the player to move. It probably is, since he doesn't even have to move. So, in that case,
+we never search this subtree to a full depth.
+
+### Panic mode
+
+Suppose we completed our search to depth N, and found a drawish score. Then we start a depth-(N+1)
+search, and consider the currently best move. It turns that the move loses! Oops! So we start trying
+other moves. But at this point we run out of allocated time for the move. What to do?
+
+We enter **panic mode**.
+
+In panic mode, we ignore whatever time we had allocated for this move, and continue searching other
+moves. We continue looking until we have found a move that doesn't lose, or we have tried every possible
+move and they all lose, or we have really run out of time.
 
 ## Opening book
+
+I only use an opening book when we play black. The black player chooses the opening, i.e. the first
+three moves. I picked that opening manually, trying to put the moves in the center of the board to
+create a nice fight, and to make chances for the two players as equal as possible, according to my
+bot (because of the swap rule).
+
+Using a simple construction algorithm by Lincke[^book], I automatically created an opening book for
+my chosen opening. The book contains 1379 positions that were analyzed off-line by my program.
+
+## Conclusion
+
+This was a fun coding exercise!
+
+Potential ideas I had that I didn't have time to try:
+* Better static evaluation, using machine learning.
+* Proof number search instead of alpha-beta pruning. Proof number search is probably well suited for
+  gomoku, because it is a very tactical game. It would allow searching some tactical lines much deeper
+  than others. Interstingly, this algorithm was also designed by Victor Allis in the same Ph.D. thesis![^allis]
+* Instead of one evaluation function, use two evaluation functions, showing potential for each player
+  separately. Some positions are very "offensive" (which would be a high score for both players)
+  and some are "defensive" (low score for both players). When looking for a win for one side (as in
+  proof number search), one player should prioritize offensive positions, and the other player should
+  try to defuse the situation by reducing the offensive potential.
 
 ## References
 
