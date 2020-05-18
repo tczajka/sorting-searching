@@ -7,11 +7,11 @@ title: "Tournament-winning gomoku AI"
 
 ## Introduction
 
-I'm going to describe my Gomoku playing program that I submitted for
+I'm going to describe my [Gomoku](https://en.wikipedia.org/wiki/Gomoku) playing program that I submitted for
 [CodeCup 2020](https://www.codecup.nl). The program (named "OOOOO") ended up winning the tournament,
 placing first in a field of 58 entries, and winning 98 out of 100 games.
 
-CodeCup is an excellent annual tournament for game AIs organized by the Dutch National Olympiad in
+[CodeCup](https://www.codecup.nl) is an excellent annual tournament for game AIs organized by the Dutch National Olympiad in
 Informatics. Every year they host a tournament for programs playing a game, with a different board
 game each time.
 
@@ -48,7 +48,7 @@ When OOOOO played the move marked as 1, it already knew it was going to win, 13 
 This despite the fact that the space of possible moves is very large: each player has almost all 256
 intersections available each move.
 
-This is a forcing sequence of threats to which defenses are more or less forced.
+The endgame is a forcing sequence of threats to which defenses are more or less forced.
 
 Move 1 is a diagonal "simple four" threat. 2 is forced, otherwise black will play at 2 and win immediately.
 
@@ -64,7 +64,7 @@ So white defends at 6.
 
 Now black makes another simple four at 7. White has to respond at 8.
 
-Now black makes a double "open three" threat at 9. White doesn't have a stronger counter-threat, so
+Now black makes a double "open three" threat at 9. White doesn't have a good counter-threat, so
 defends one of these open threes at 10.
 
 Black converts the other, undefended open three into an open four with 11. There is no defense to
@@ -82,12 +82,13 @@ We categorize threats as follows:
 * Non-forcing threats. These don't require the opponent to respond, but may become forcing threats
   later when additional stones are added.
 
-Threats can also be ordered, by their severity:
+Winning and forcing threats can also be ordered by their severity:
 * Fives.
 * Fours.
 * Threes.
-This ordering is useful when thinking about counter-threats later. Instead of answering a forcing
-threat, one may counter with a more severe counter-threat.
+
+This ordering will useful when thinking about counter-threats later. Instead of answering a forcing
+threat, one may counter with a more severe forcing counter-threat.
 
 ### Five
 
@@ -99,13 +100,13 @@ Fives are pretty self-explanatory. You immediately make five in a row and win. 1
 
 ![open fours](/assets/images/gomoku/open_fours.png)
 
-A standard open four threat looks is a play like 1. Black has no defense. If black plays at a, white
+A standard open four threat is a play like 1. Black has no defense. If black plays at a, white
 plays at b. If black plays at b, white plays at a. The only way to salvage the game for black would
 be to play a more severe counter-threat elsewhere, i.e. a five!
 
 But 1 is not he only pattern like that. 2 and 3 work exactly the same way. They also create two
 ways for white to finish the game. Even though they involve 6 and 7 stones rather than 4, I also
-call such equivalent patterns "open fours".
+call such equivalent patterns "open fours" (because we have four stones out of five in a row).
 
 ### Simple four
 
@@ -119,15 +120,14 @@ White plays at 1 or 2, black has to respond at a (or play a more severe threat, 
 
 ![open threes](/assets/images/gomoku/open_threes.png)
 
-The most common open three is play at 1: three in a row, with two empty spaces on each side. Black has
+The most common open three looks like 1: three in a row, with at least two empty spaces on each side. Black has
 to defend at b or c (or play a four-threat elsewhere). Otherwise, white will make an open four at
 b or c and win.
 
 Open three is a special kind of threat in that four empty spaces are required, but only two of them
 are valid defenses for black. For instance, if black tries to defend at a, white still makes an open
 four at c and wins.
-  
-This will be relevant later, when we talk about sequences of threat:
+This will be relevant later, when we talk about sequences of threats:
 we have to make sure that a and d are still empty when this threat is played, even though black can't
 defend there. 
 
@@ -135,20 +135,21 @@ And again, there are other patterns like 2 and 3 above that we call "open threes
 involve more than three white stones. The defining characteristic is that there are four
 empty spaces of which white needs to fill any two consecutive ones to win.
 
-The last pattern is my favorite. It plays a role in example game 2 below.
+The last pattern (3) is my favorite. It looks pretty. And it played a major role in example game 2 shown below.
 
 ### Broken three
 
 ![broken threes](/assets/images/gomoku/broken_threes.png)
 
-Finally we come to the weakest type of forcing threat, but perhaps the most common one: a broken
+Finally we come to the weakest type of forcing threat, but probably the most common one: a broken
 three.  Here only three empty spots are involved. Black can defend at any one of them, otherwise
 white will make an open four at b.
 
 ### Non-forcing threats
 
 All types of threats can be described by two numbers: {% latex %}(a,b){% endlatex %} where
-{% latex %} 1 \le a \le 5 {% endlatex %} is the threat severity (we already have a stones out of 5),
+{% latex %} 1 \le a \le 5 {% endlatex %} is the threat severity (we already have {% latex %}a{% endlatex %}
+stones out of 5),
 and {% latex %} 1 \le b \le 6-a {% endlatex %} is the number of possible ways to make a five.
 
 So all the threats types are as follows:
@@ -162,8 +163,8 @@ So all the threats types are as follows:
   * (3, 2): broken three
 * Non-forcing threats:
   * (3, 1): simple three
-  * (2, 4), (2, 3), (2, 2), (2, 1): a two that can be completed in 4, 3, 2, 1 ways respectively
-  * (1, 5), (1, 5), (1, 3), (1, 2), (1, 1): a one that can be completed in 5, 4, 3, 2, 1 ways respectively
+  * (2, 4), (2, 3), (2, 2), (2, 1): a two that can be extended to a five in 4, 3, 2, 1 ways respectively
+  * (1, 5), (1, 5), (1, 3), (1, 2), (1, 1): a single stone that can be extended in 5, 4, 3, 2, 1 ways respectively
 * No threat at all
 
 ![other threats](/assets/images/gomoku/other_threats.png)
@@ -195,9 +196,10 @@ of the two spots at 10, and black finishes the job at 11.
 
 My bot has a lot of things precomputed, to enable a quick recognition of threat patterns.
 
-There are 16 types of threats (from no threat to a five). There are a total of 65 patterns.
-For each pattern we have a set of squares that must be occupied, the set of squares that must be
-empty, and possible defenses.
+There are 16 types of threats (from no threat to a five). There are a total of 65 distinct threat
+patterns.
+For each pattern we store the set of squares that must be occupied, the set of squares that must be
+empty, and the set of squares that are possible defenses.
 
 For each line length from 5 to 16, and for each pattern of opponent stones on that line, we precompute
 how the line is split into sub-lines by opponent stones. Any threat has to be contained within
@@ -210,7 +212,7 @@ Using these tables we can quickly look up threats available on the board for eac
 
 ## Static evaluation
 
-My static evaluation of a board position is very simple. I tried some simple machine learning, but
+My static evaluation of a position is very simple. I tried some simple machine learning, but
 ended up just using a simple hand-made formula that works reasonably well.
 
 For each player, and for each empty intersection of the board, I look at what threats are available
@@ -249,8 +251,8 @@ for black stones and one for white stones.
 
 We add redundancy so that we can easily extract patterns of bits corresponding to lines on the board.
 For each player we store the board in four copies, rotated by 0, 90, 45 and 135 degrees. So we have:
-* A row-major bitboard, where intersection in the same row are consecutive.
-* A column-major bitboard, where intersection in the same column are consecutive.
+* A row-major bitboard, where intersections in the same row are consecutive.
+* A column-major bitboard, where intersections in the same column are consecutive.
 * A NW-SE bitboard, where intersections in the same NW-SE diagonal are consecutive.
 * A NE-SW bitboard, where intersections in the same NE-SW diagonal are consecutive.
 
@@ -263,13 +265,13 @@ Every time we make or un-make a move, we update all threats in the neighborhood.
 in each direction in our precomputed tables, and update all threats nearby. We have to go a distance
 of 4 in each direction, so we only have to update 8 * 4 = 32 nearby intersections.
 
+We also keep track of whether the game is already over, so we can answer that question immediately.
+
 ### Incremental static evaluation
 
-We maintain the static evaluation. Every time the current threat available at an intersection is updated,
+Every time the current threat available at an intersection is updated,
 we recompute the score for that intersection, and update the total sum of these scores. This way we
 have the score always available without having to recompute it for the whole board.
-
-We also keep track of whether the game is already over, so we can answer that question immediately.
 
 ## Threat sequence search
 
@@ -301,6 +303,8 @@ We avoid checking all these combinations separately by using the trick discovere
 When searching for a winning threat sequence for white, we simply assume that black is allowed to
 play **all** the defenses to a single threat at once!
 
+This is a conservative approach, but often good enough, and saves a lot of computation.
+
 So above we simply say: first we play the first threat, which adds a white stone at 1 and three black
 stones at 2, 2, 2. Then we play the second threat, which adds a white stone at 3 and three black stones at
 4, 4, 4. Then we play the final game-winning threat at 5.
@@ -312,7 +316,7 @@ search a single-player game.
 
 Another way to reduce the number of combinations to look through is to notice that in the combination
 above, the order of the first two threats doesn't matter. We could play 1 first, or we could play 3
-first. But we don't need to check both options separately.
+first. We don't need to check both orders separately. For longer sequences, this helps a lot.
 
 This algorithm is again due to Victor Allis' Ph.D. thesis[^allis].
 
@@ -325,38 +329,38 @@ In the example above, threat 5 depends on threats 1 and 3.
 We start from all immediate threats. For each threat node, we look at whether new threats are enabled
 by this threat, and create those nodes.
 
-We also combine threats on a single line (such as 1 and 3) into "combination nodes", and look for
-new threats that are created as a result of such combination.
+We also combine threats that are on a single line (such as 1 and 3) into "combination nodes", and look for
+new threats that are created as a result of such a combination.
 
 Before we create a combination node we check whether the two threats that we are combining, and their
 dependencies, do not interfere with each other (i.e. reuse the same squares).
 
 When combining threats, special care is taken for open threes. An open three allows only two defense
 points, but requires two additional intersections to be empty when the threat is executed. These empty
-intersections can later be used for other threats. This creates an additional ordering dependency
+intersections can later be used for other threats. This creates additional ordering dependencies
 between open threes and other threats. When combining threats, we use **topological sorting** to see
 whether we can order threats so that these ordering dependencies are satisfied.
 
-We thus build a directed acyclic graph of these threat nodes and combination nodes, until we run out of
+We thus build a directed acyclic graph of threat nodes and combination nodes, until we run out of
 possibilities, or we find a game-winning threat (open four or five).
 
 ### Counter-threats and refutations
 
 If only things could be that simple...
 
-Imagine we found the following threat sequence:
+Imagine we have found the following threat sequence:
 
 ![almost good](/assets/images/gomoku/almost_good.png)
 
 White plays a horizontal broken three at 1 (it's not an open three due to the presence of a black
 stone), then a vertical broken three at 3, then a horizonal open four at 5, which wins.
 
-But this doesn't work. Black can use the left-most 2 as a defense to 1. Then, after white plays the
+It looks good. But it doesn't work. Black can use the left-most 2 as a defense to 1. Then, after white plays the
 threat at 3, black ignores the threat, and instead plays a more severe counter-threat at **a** creating
 an open four and winning the game!
 
-This is a refutation of a threat sequence. But playing out its own threats, white helps black set up
-counter-threats that ultimately defeat the threat sequence.
+This is a refutation of a threat sequence. While playing out his own threats, white inadvertently
+helps black set up counter-threats that ultimately defeat the threat sequence.
 
 There are two ways a threat sequence can be refuted by counter-threats:
 * The defender may win with his own counter-threats.
@@ -364,18 +368,18 @@ There are two ways a threat sequence can be refuted by counter-threats:
   threat sequence.
 
 After finding a threat sequence with the dependency-based search, we run another dependency-based search,
-this time for defender's counter-threats, to see if we can find a refutation. Differences from a regular search are:
+this time for defender's counter-threats, to see if we can find a refutation. Differences from regular search are:
 * We look at counter-threats after each move of the original threat sequence. These may combine with
-  counter-threats made earlier in the threat sequence.
+  counter-threats made in response to other, earlier threats in the threat sequence.
 * We only consider counter-threats that are more severe than the original threat.
 * We declare victory for the defender when either he wins or manages to interfere with the original
   threat sequence.
 * We don't consider refutations to refutations recursively. Instead, if we find a potential refutation,
-  we just conservatively assume that it works.
+  we just conservatively assume that it works, throwing away the potential threat sequence that we found.
 
 ## Principal variation search
 
-As a main game tree search algorithm, we use Principal Variation Search, which is a variant of
+As the main game tree search algorithm, we use Principal Variation Search, which is a variant of
 alpha-beta prunning. In each node we run dependency-based search to see if a threat sequence is
 available, and also whether the current player has to defend against opponent's possible threat sequence.
 
@@ -384,10 +388,10 @@ available, and also whether the current player has to defend against opponent's 
 In each node of the tree search, we run dependency-based search for the opponent of the player to
 move, to see if there is a potential danger we have to defend against.
 
-If there is, we first determine the set of moves that defend against the danger.
+If there is, we first want to determine the set of moves that defend against the danger.
 
 We augment the dependency-based search algorithm to also return all moves that could potentially be
-defensive moves. These are:
+defensive moves, whenever a winning sequence is found. These potential defensive moves are:
 * all intersections that are part of the threat sequence, and
 * all intersections that create additional counter-threats for the defender in the refutation search
 
@@ -395,18 +399,20 @@ Once we have this set of potential defenses, we try each one in turn, and again 
 search for the other player.
 * If the threat search now returns no attack for the opponent, we have found a valid defense, so we add
   it to the set of valid defenses.
-* If it does return a threat sequence, then this potential defense doesn't work. But also this generates
-  another set of potentially valid defenses. A defense that works has to work against all threat sequences,
+* If it does return another winning threat sequence, then this potential defense doesn't work.
+  But also we then get
+  another set of potentially valid defenses to this other threat sequence. A defense that works has
+  to work against all threat sequences,
   so we take the intersection of the two sets of potential defenses.
 
 We continue this until we have converged on the set of defensive moves that work. This set could be
 empty, which means that the position is lost, and we can score the node in the tree.
 
-It it is not empty, we only consider those moves that are valid defenses as children of the tree node.
+If it is not empty, we only consider those moves that are valid defenses as children of the tree node.
 
 ### Null move forward prunning
 
-Some moves don't create any potential threats. Often these are weak moves. We want to try to prune
+Some moves don't create any potential winning threats. Often these are weak moves. We want to try to prune
 these from the search tree.
 
 The way this is implemented is similar to the null-move heuristic often used in chess programs.
@@ -414,30 +420,30 @@ The way this is implemented is similar to the null-move heuristic often used in 
 If in a node there is no threat sequence for the opponent, there is no immediate danger. In that case,
 we first try a **null move**, i.e. no move at all, and run a shallower search. If this shallow search
 returns a good score (a beta-cut in the alpha-beta algorithm), we assume that this position is really
-good for the player to move. It probably is, since he doesn't even have to move. So, in that case,
-we never search this subtree to a full depth.
+good for the player to move. It probably is, since he doesn't even have to move to get a good score.
+So, in that case, we never search this subtree to a full depth and just score the node as a good score.
 
 ### Panic mode
 
 Suppose we completed our search to depth N, and found a drawish score. Then we start a depth-(N+1)
-search, and consider the currently best move. It turns that the move loses! Oops! So we start trying
+search, and consider the currently best move. It turns out that the move loses! Oops! So we start trying
 other moves. But at this point we run out of allocated time for the move. What to do?
 
 We enter **panic mode**.
 
 In panic mode, we ignore whatever time we had allocated for this move, and continue searching other
 moves. We continue looking until we have found a move that doesn't lose, or we have tried every possible
-move and they all lose, or we have really run out of time.
+move and they all lose, or we have really run out of all most of the time on the clock.
 
 ## Opening book
 
-I only use an opening book when we play black. The black player chooses the opening, i.e. the first
+We only use an opening book when we are playing black. The black player chooses the opening, i.e. the first
 three moves. I picked that opening manually, trying to put the moves in the center of the board to
 create a nice fight, and to make chances for the two players as equal as possible, according to my
-bot (because of the swap rule).
+bot's evaluation (that's what we want because of the swap rule).
 
-Using a simple construction algorithm by Lincke[^book], I automatically created an opening book for
-my chosen opening. The book contains 1379 positions that were analyzed off-line by my program.
+Using a simple algorithm by Lincke[^book], I automatically constructed an opening book for
+my chosen opening. The book contains 1379 positions that were analyzed off-line by the program.
 
 ## Conclusion
 
@@ -447,12 +453,14 @@ Potential ideas I had that I didn't have time to try:
 * Better static evaluation, using machine learning.
 * Proof number search instead of alpha-beta pruning. Proof number search is probably well suited for
   gomoku, because it is a very tactical game. It would allow searching some tactical lines much deeper
-  than others. Interstingly, this algorithm was also designed by Victor Allis in the same Ph.D. thesis![^allis]
+  than others. Interestingly, this algorithm was also designed by Victor Allis in the same Ph.D. thesis![^allis]
 * Instead of one evaluation function, use two evaluation functions, showing potential for each player
   separately. Some positions are very "offensive" (which would be a high score for both players)
-  and some are "defensive" (low score for both players). When looking for a win for one side (as in
+  and some are "defensive", locked-down (low score for both players). When looking for a win for one side (as in
   proof number search), one player should prioritize offensive positions, and the other player should
-  try to defuse the situation by reducing the offensive potential.
+  try to defuse the situation by reducing the offensive potential of the opponent.
+
+Maybe I'll try these in the future if there is another Gomoku AI tournament.
 
 ## References
 
