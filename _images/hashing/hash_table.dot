@@ -1,0 +1,21 @@
+digraph HashTable {
+  rankdir=LR;
+  node [shape="record", width=0.2, height=0.2]; 
+
+  buckets [label="<b0>|<b1>|<b2>|<b3>|<b4>|<b5>|<b6>|<b7>|<b8>|<b9>"];
+
+  1230 [label="{1230|<p>}"];
+  1234 [label="{1234|<p>}"];
+  4444 [label="{4444|<p>}"];
+  2674 [label="{2674|<p>}"];
+  4438 [label="{4438|<p>}"];
+  3578 [label="{3578|<p>}"];
+
+  buckets:b0 -> 1230;
+  buckets:b4 -> 1234;
+  1234:p -> 4444;
+  4444:p -> 2674;
+  
+  buckets:b8 -> 4438;
+  4438:p -> 3578;
+}
