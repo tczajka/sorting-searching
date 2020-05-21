@@ -7,7 +7,7 @@ title: "How to pick a hash function"
 
 ## Summary
 
-If you don't want to read the rest of the article, the summary is:
+If you don't read the rest of the article, it can be summarized as:
 * Use universal hashing. It is simple, efficient, and provably generates minimal collisions
   in expectation regardless of your data.
 * Most hash table implementations don't do this, unfortunately.
