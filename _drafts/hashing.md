@@ -213,7 +213,7 @@ family a "universal hash function".
 
 ## Hashing an integer
 
-If your keys are integers in some range (say, 30-bit integers), do this:
+If your keys are integers in some range, do this:
 * Pick a prime number {%latex%}p{%endlatex%} that is at least as large as the range of keys.
 * Pick random {%latex%}0 \le a, b < p{%endlatex%}, {%latex%}a\ne 0{%endlatex%}.
 
@@ -251,15 +251,15 @@ both of them can be avoided:
 Suppose we have a data structure consisting not of just one number {%latex%}x{%endlatex%}, but of
 {%latex%}n{%endlatex%} numbers {%latex%}(x_1, x_2, \ldots, x_n){%endlatex%}.
 
-In that case we randomly select {%latex%}n{%endlatex%} hash functions {%latex%}h_1, \ldots, h_n{%endlatex%}
-from the universal family above and add them:
+In that case we randomly select {%latex%}n{%endlatex%} multipliers {%latex%}a_1, a_2, \ldots, a_n{%endlatex%},
+and use:
 
 {%latex centred%}
-h(x_1, x_2, \ldots, x_n) = (h_1(x_1) + h_2(x_2) + \ldots + h_n(x_n)) \bmod m
+h(x_1, x_2, \ldots, x_n) = ((a_1 x_1 + a_2 x_2 + \ldots + a_n x_n + b) \bmod p) \bmod m
 {%endlatex%}
 
 This also guarantees collision probability of at most {%latex%}\frac{1}{m}{%endlatex%} for different
-keys. It's sufficient that at least of the {%latex%}x_i{%endlatex%} is different.
+keys, by a very similar proof. It's sufficient that at least of the {%latex%}x_i{%endlatex%} is different.
 
 ## Hashing variable-length data
 
