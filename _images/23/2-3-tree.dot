@@ -1,0 +1,19 @@
+digraph Tree {
+  ordering=out;
+  edge [dir="none"];
+  root [label="3"];
+  a [label="3"];
+  b [label="6"];
+  c [label="12"];
+  node [shape="box"];
+  root -> a;
+  root -> b;
+  root -> c;
+  a -> 3;
+  a -> 5;
+  b -> 6;
+  b -> 7;
+  b -> 9;
+  c -> 12;
+  c -> 13;
+}

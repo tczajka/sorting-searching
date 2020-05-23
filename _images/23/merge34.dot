@@ -1,0 +1,31 @@
+digraph Tree {
+  ordering=out;
+  edge [dir="none"];
+  b;
+  root2 [label=""];
+  root3 [label=""];
+  node [shape="triangle"];
+  a;
+  node [height=1.0];
+  b -> b1;
+  b -> b2;
+  b -> b3;
+  ab1 [label="a+b1"];
+  ab1extra [label="a+b1"];
+  b2new [label="b2"];
+  b3new [label="b3"];
+  root2 -> ab1;
+  root2 -> ab1extra;
+  root3 -> b2new;
+  root3 -> b3new;
+  breakL [label="", style=invis, width=0];
+  breakR [label="", style=invis, width=0];
+  {
+    rank=same;
+    a -> b1 [style=invis];
+    b3 -> breakL [style=invis];
+    breakL -> breakR [dir=forward, minlen=2];
+    breakR -> ab1 [style=invis];
+    ab1extra -> b2 [style=invis];
+  }
+}
