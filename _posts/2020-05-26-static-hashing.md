@@ -141,11 +141,11 @@ The total size of all second level hash tables (and thus also the number of such
 
 ![compressed table 1](/assets/images/static-hashing/compressed1.png)
 
-Now let's put all the data elements into a dedicated array. Order the so the ones that appear
-in single-element buckets first, in the same order as they
-appear in buckets. Also put all the secondary table hash functions and pointers into a separate array,
+Now let's put all the data elements into a dedicated array. Order them so that the ones that appear
+in single-element buckets are ordered first, in the same order as they
+appear in the buckets. Also put all the secondary table hash functions and pointers into a separate array,
 again in the same order
-as they appear in buckets. In the main bucket table we just need to store
+as they appear in main buckets. In the main bucket table we just need to store
 what kind of entry it is (none, single element, or secondary table), and an index into the appropriate array.
 
 ![compressed table 2](/assets/images/static-hashing/compressed2.png)
