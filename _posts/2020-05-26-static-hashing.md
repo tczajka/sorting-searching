@@ -45,7 +45,7 @@ significant memory overhead to store all the buckets and pointers.
 ## Guaranteeing worst case access time
 
 Start by defining a family of [universal hash functions]({% link _posts/2020-05-21-hashing.md %})
-such that the probability of a collision when hashing into a random of {%latex%}m{%endlatex%} is bounded
+such that the probability of a collision when hashing into a {%latex%}m{%endlatex%} buckets is bounded
 by {%latex%} c/m {%endlatex%} for some constant {%latex%}c{%endlatex%}. Normally we can make
 {%latex%}c \approx 1{%endlatex%}.
 
