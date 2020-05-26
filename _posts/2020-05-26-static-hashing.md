@@ -117,7 +117,7 @@ First, let's **increase** the number of main buckets by a factor of {% latex %}z
 (to be determined later), so we have {% latex %}zn{% endlatex %} buckets. Seems like this will only
 make it worse, but bear with me. We will pack them really tightly!
 
-The expected number of collisions is now:
+The expected number of collisions is now smaller:
 
 {% latex centred %}
 \sum_{i=0}^{zn-1} \binom{b_i}{2} \le \binom{n}{2} \frac {c}{zn} < \frac{n^2}{2} \frac{c}{zn} = \frac{cn}{2z}
@@ -161,10 +161,10 @@ In each group, we need 2 words for the first element index and the first table i
 of {% latex %}2zn/g{% endlatex %} words.
 
 We also have
-{% latex %}zn{% endlatex %} individual buckets, each with two bits for the type of bucket, and an
-offset. However, those offsets are small.
-They only need {% latex %}\log g{% endlatex %} bits each. So we can pack them into
-{% latex %}zn \log g / \log n{%endlatex%} words, because we know we can fit {% latex %}\log n{% endlatex %}
+{% latex %}zn{% endlatex %} individual buckets. Each bucket has the type of bucket (there are 3 types,
+so 2 bits), and an offset. However, those offsets are small, between 0 and {% latex %}g{% endlatex %}.
+So buckets only need {% latex %}2 + \log g{% endlatex %} bits each. We can pack them into
+{% latex %}O(zn \log g / \log n){%endlatex%} words, because we know we can fit {% latex %}\log n{% endlatex %}
 bits in a word.
 
 The total space usage for all the elements, all the secondary tables, and all the buckets is therefore:
