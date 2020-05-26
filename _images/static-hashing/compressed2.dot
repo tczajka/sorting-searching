@@ -1,0 +1,18 @@
+digraph {
+  rankdir = LR;
+  node [shape="record", width=0.2, height=0.2];
+
+  entries [label="{1111|3939|8888|4444|1231}"];
+
+  minibuckets [label="{h2|<b2>}|{h3 | <b3>}"];
+  bucket_2 [label="{9123|3321}"];
+  bucket_3 [label="{4337|4123||8666||}"];
+  minibuckets:b2 -> bucket_2:w;
+  minibuckets:b3 -> bucket_3:w;
+
+  buckets [label="|<elems> elem 0|table 0|table 1||elem 1|elem 2||elem 3||||||elem 4|||||"];
+
+  spacer [style=invis];
+  buckets:elems -> spacer -> entries [style=invis];
+  buckets -> minibuckets [style=invis];
+}

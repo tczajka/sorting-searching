@@ -1,0 +1,10 @@
+digraph {
+  node [shape="record", width=0.2, height=0.2];
+
+  buckets [label="
+    {first elem: e=0 | first table: t=0 | { | e+0 | t+0 | t+1 | }} |
+    {first elem: e=1 | first table: none | { e+0 | e+1 | | e+2 | }} |
+    {first elem: e=4 | first table: none | { ||||e+0 }} |
+    {first elem: none | first table: none | {||||}}
+    "];
+}

@@ -1,0 +1,12 @@
+digraph {
+  rankdir = LR;
+  node [shape="record", width=0.2, height=0.2];
+
+  buckets [label="|1111|{h2|<b2>}|{h3|<b3>}||3939|8888||4444||||||1231|||||"];
+
+  bucket_2 [label="{9123|3321}"];
+  bucket_3 [label="{4337|4123||8666||}"];
+
+  buckets:b2 -> bucket_2:w;
+  buckets:b3 -> bucket_3:w;
+}

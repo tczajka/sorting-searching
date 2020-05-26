@@ -1,0 +1,17 @@
+digraph {
+  rankdir = LR;
+  node [shape="record", width=0.2, height=0.2];
+
+  buckets [label="{h0|} | {h1 | <b1>} |{h2|} | {h3|<b3>} | {h4|<b4>} |
+                  {h5|} | {h6|} | {h7|<b7>} | {h8|} | {h9|}"];
+
+  bucket_1 [label="{|1234||1394|4333|}"];
+  bucket_3 [label="{4337|9444}"];
+  bucket_4 [label="{6723|||9332||1235|||9848|||}"];
+  bucket_7 [label="{9242}"];
+
+  buckets:b1 -> bucket_1:w;
+  buckets:b3 -> bucket_3:w;
+  buckets:b4 -> bucket_4:w;
+  buckets:b7 -> bucket_7:w;
+}
