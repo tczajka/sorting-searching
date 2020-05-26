@@ -2,11 +2,11 @@ digraph {
   rankdir = LR;
   node [shape="record", width=0.2, height=0.2];
 
-  entries [label="{1111|3939|8888|4444|1231}"];
+  entries [label="{1111|3939|8888|4444|1231|9123|3321|4337|4123|8666}"];
 
   minibuckets [label="{h2|<b2>}|{h3 | <b3>}"];
-  bucket_2 [label="{9123|3321}"];
-  bucket_3 [label="{4337|4123||8666||}"];
+  bucket_2 [label="{elem 5|elem 6}"];
+  bucket_3 [label="{elem 7|elem 8||elem 9||}"];
   minibuckets:b2 -> bucket_2:w;
   minibuckets:b3 -> bucket_3:w;
 
