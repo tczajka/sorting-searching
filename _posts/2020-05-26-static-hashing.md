@@ -149,8 +149,8 @@ what kind of entry it is (none, single element, or secondary table), and an inde
 
 ![compressed table 2](/assets/images/static-hashing/compressed2.png)
 
-Finally, we group the main buckets into groups of size {% latex %}g{% endlatex %} (to be determined).
-In each group we store just one index of the first single elementin the group (if any), and one index
+Finally, we group the main buckets into groups of size {% latex %}g{% endlatex %}.
+In each group we store just one index of the first single element in the group (if any), and one index
 of the first secondary table in the group (if any). In each individual bucket we just store an offset
 from those. The above bucket table now looks like this:
 
