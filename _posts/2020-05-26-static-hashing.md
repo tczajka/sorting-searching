@@ -141,7 +141,7 @@ The total size of all second level hash tables (and thus also the number of such
 
 ![compressed table 1](/assets/images/static-hashing/compressed1.png)
 
-Now let's separate out all the data elements into a separate array. Put all the ones that appear
+Now let's put all the data elements into a dedicated array. Order the so the ones that appear
 in single-element buckets first, in the same order as they
 appear in buckets. Also put all the secondary table hash functions and pointers into a separate array,
 again in the same order
