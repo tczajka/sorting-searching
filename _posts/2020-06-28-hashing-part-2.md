@@ -26,7 +26,7 @@ In other words: compute {% latex %}ax+b{% endlatex %}, ignore overflow, and take
 Can't get much simpler than this!
 
 Incredibly this is a universal hash function family with optimal collision rate. For any pair of
-different x and y, the probility of collision is {% latex %}\Pr(h_1(x) = h_1(y)) \le 2^{-m} {% endlatex %}.
+different x and y, the probability of collision is {% latex %}\Pr(h_1(x) = h_1(y)) \le 2^{-m} {% endlatex %}.
 
 In C:
 
