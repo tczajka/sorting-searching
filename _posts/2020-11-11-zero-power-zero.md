@@ -39,7 +39,7 @@ A **semigroup** is a set of objects with an associative multiplication operation
 general concept: it can be natural numbers, real numbers, square matrices, linear operators, all
 kinds of things.
 
-In any semigroup we can define exponentiation to any posive integral power:
+In any semigroup we can define exponentiation to any positive integral power:
 
 {% latex centred %}
 \begin{aligned}
