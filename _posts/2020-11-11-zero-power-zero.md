@@ -210,7 +210,7 @@ I have three ways to answer that.
 
 ### Natural numbers are real numbers
 
-An ubiquitous convention in mathematics is that natural numbers are a subset of integer
+A ubiquitous convention in mathematics is that natural numbers are a subset of integer
 numbers, which in turn are a subset of rational numbers, which are a subset of real numbers.
 
 {% latex centred %}
