@@ -217,7 +217,7 @@ numbers, which in turn are a subset of rational numbers, which are a subset of r
 \mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}
 {% endlatex %}
 
-This lets us mix an match integers with rational numbers and irrational numbers in expressions
+This lets us mix and match integers with rational numbers and irrational numbers in expressions
 without having to worry about converting between these types.
 
 If so, it makes no sense to say that 0<sup>0</sup>=1 but 0<sup>0.0</sup> is undefined, because
