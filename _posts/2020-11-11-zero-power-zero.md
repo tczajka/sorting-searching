@@ -262,7 +262,7 @@ Let's calculate:
 {% endlatex %}
 
 And indeed this is correct! The derivative at x = 0 is 1 for p = 1, and 0 for p > 1. The derivative
-at 0 discontinuously "jumps" from 0 to 1 as soon as we increase the exponent p even slightly above 1.
+at 0 discontinuously "jumps" from 1 to 0 as soon as we increase the exponent p even slightly above 1.
 
 ## The naive limit algorithm
 
