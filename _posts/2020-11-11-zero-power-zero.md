@@ -287,7 +287,7 @@ Which would give an incorrect answer. The correct answer is 1/3.
 However, the mistake is not in the step 0<sup>0</sup> = 1. The mistake already happened in the
 previous step, where we simplified the limit to 0<sup>0</sup>.
 
-A common (incorrect) thinking about this is: we allow calculating limits separately for
+A common (incorrect) way of thinking about this is: we allow calculating limits separately for
 sub-expressions only if the resulting expression makes sense.
 If it does not make sense, then doing that is not allowed. If only we declare that 0<sup>0</sup> is not a valid
 expression, the reduction to 0<sup>0</sup> will not be allowed, so it solves the problem. If however
