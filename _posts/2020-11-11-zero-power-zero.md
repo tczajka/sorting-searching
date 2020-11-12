@@ -188,11 +188,14 @@ n = \prod_{i=1}^{k} p_i^{\alpha_i}
 
 and then we have:
 {% latex centred %}
-S(n) = S\left(\prod_{i=1}^{k} p_i^{\alpha_i}\right) = \prod_{i=1}^k S(p_i^{\alpha_i}) = \prod_{i=1}^k 0 = 0^k
-= \begin{cases}
-1 &\text{if } k = 0 \\
-0 &\text{if } k > 0
+\begin{aligned}
+S(n) &= S\left(\prod_{i=1}^{k} p_i^{\alpha_i}\right) = \prod_{i=1}^k S(p_i^{\alpha_i}) = \prod_{i=1}^k 0 = 0^k
+= [k=0] = [n=1] \\
+&= \begin{cases}
+1 &\text{if } n = 1 \\
+0 &\text{if } n > 1
 \end{cases}
+\end{aligned}
 {% endlatex %}
 
 ## Fractional exponents
@@ -337,6 +340,6 @@ I think we should just all agree that:
 {%endlatex %}
 
 It follows directly from definitions, and it's a nice and consistent and useful property
-of exponentiation, so there is no convincing reason to make an exception.
+of exponentiation. There is no convincing reason to make an exception.
 
 Let me know what you think!
