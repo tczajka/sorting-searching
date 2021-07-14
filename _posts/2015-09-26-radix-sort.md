@@ -9,9 +9,9 @@ It is also interesting theoretically, since its runtime complexity is in some ca
 standard comparison-based sorting. As we'll see below, the run-time complexity for sorting n w-bit
 integers is:
 
-{% latex centred %}
+$$
 \Theta\left(n \frac{w}{\log n}\right)
-{% endlatex %}
+$$
 
 
 ## Algorithm
@@ -82,41 +82,41 @@ position: 0, 0, 5, 9, 12, 14, 15, 15, 16, 20
 
 Of course in practice we don't sort based on decimal digits. We could sort based on individual bits but we can do better than that. Sort based on **groups** of bits.
 
-If we sort k bits at a time, there are {% latex %}2^k{% endlatex %} possible "digits".
-The `count` array will need to be of that length. Hence, let's make {% latex %}k \le \log_2 n{% endlatex %},
+If we sort k bits at a time, there are $$2^k$$ possible "digits".
+The `count` array will need to be of that length. Hence, let's make $$k \le \log_2 n$$,
 so that the helper array isn't longer than the data being sorted.
 
-For added performance, it may be useful to make k somewhat smaller than {% latex %}\log_2 n{% endlatex %}.
-In our implementation below, we use {% latex %}k = \lfloor \frac{1}{3}\log_2 n \rfloor {%endlatex%}.
+For added performance, it may be useful to make k somewhat smaller than $$\log_2 n$$.
+In our implementation below, we use $$k = \lfloor \frac{1}{3}\log_2 n \rfloor $$.
 This increases the number of rounds 3-fold, but has several advantages that outweigh that:
-* The count array only uses {% latex %}n^{1/3} {% endlatex %} memory.
+* The count array only uses $$n^{1/3} $$ memory.
 * Computing prefix sums in step 2 takes negligible time.
 * Counting in step 1 doesn't randomly increment counters all over memory.
   It randomly increments counters in a tiny section of memory, which is good for cache performance.
 * Shuffling in step 3 doesn't randomly write all over memory. It writes consecutively in only
-  {% latex %}n^{1/3}{% endlatex %} different locations at a time, which also improves cache performance.
+  $$n^{1/3}$$ different locations at a time, which also improves cache performance.
 
-For the purposes of analyzing asymptotic performance, we simply say: {% latex %} k = \Theta(\log n){% endlatex %}.
+For the purposes of analyzing asymptotic performance, we simply say: $$ k = \Theta(\log n)$$.
 
-If the numbers being sorted have w bits, we have {% latex %}\Theta(\frac{w}{\log n}) {% endlatex %} rounds.
-Each round is done in {% latex %}\Theta(n){% endlatex %} time, hence the total running time of radix sort is:
+If the numbers being sorted have w bits, we have $$\Theta(\frac{w}{\log n}) $$ rounds.
+Each round is done in $$\Theta(n)$$ time, hence the total running time of radix sort is:
 
-{% latex centred %}
+$$
 \Theta\left(n \frac{w}{\log n}\right)
-{% endlatex %}
+$$
 
 Note what this means. The larger the n, the less time we spend per element!
-This is in contrast with comparison-based sorts, where we spend {% latex %}\Theta(\log n) {% endlatex %}
+This is in contrast with comparison-based sorts, where we spend $$\Theta(\log n) $$
 per element, which increases with n.
 
 This indicates that there is a threshold: for small n it is better to use a comparison-based sort.
 For large n, radix sort is better.
 
 What is the threshold? It should be about when
-{% latex %}\frac{w}{\log n} \approx \log n{% endlatex %}, that is, when
-{% latex %}n \approx 2^{w^{1/2}}{%endlatex%}.
+$$\frac{w}{\log n} \approx \log n$$, that is, when
+$$n \approx 2^{w^{1/2}}$$.
 
-For instance, when w=64, {% latex %}n \approx 2^8 = 256{% endlatex %} or so should be the threshold.
+For instance, when w=64, $$n \approx 2^8 = 256$$ or so should be the threshold.
 If n is significantly bigger than this, radix sort should start to dominate.
 
 ## C++ implementation
@@ -191,14 +191,14 @@ I generated arrays of random 64-bit integers and timed the time per element it t
 
 We see the effect as predicted: for `std::sort`, the running time per element increases with n,
 for radix_sort it decreases with n. It's not exactly proportional and inversely proportional to
-{% latex %}\log n{%endlatex%}
+$$\log n$$
 due to various effects (mostly cache sizes), but the trend is there.
 Most importantly: for large n, radix_sort is clearly winning!
 
 ## Further optimizations
 
 More optimizations are possible which can lead to improvements in performance. Some ideas:
-* Optimize the number of rounds as a function of n. Taking {%latex%}\frac{1}{3} \log n{%endlatex%}
+* Optimize the number of rounds as a function of n. Taking $$\frac{1}{3} \log n$$
   bits at a time is a rough guess at what should work well.
 * Currently we scan the data array twice in each iteration: once to count, a second time to shuffle.
   It can be reduced to a single scan: while shuffling based on the current digit, we could also be

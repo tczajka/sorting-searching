@@ -2,18 +2,18 @@
 title: "Faster than radix sort: Kirkpatrick-Reisch sorting"
 ---
 [Radix sort]({% link _posts/2015-09-26-radix-sort.md %}) sorts n w-bit integers by splitting them
-up into chunks of {%latex%}\log n{%endlatex%} bits each, and sorting each chunk in linear time.
-Thus it achieves {%latex%}O(nw/\log n){%endlatex%} time.
+up into chunks of $$\log n$$ bits each, and sorting each chunk in linear time.
+Thus it achieves $$O(nw/\log n)$$ time.
 
 In 1983 Kirkpatrick and Reisch[^kr] published an algorithm that improves on this. It achieves time
 that has an exponentially smaller factor next to n:
 
-{% latex centred %}
+$$
 O\left(n + n \log\frac{w}{\log n}\right)
-{% endlatex %}
+$$
 
 As originally published, the algorithm is deterministic, at the cost of using a huge
-{% latex %}\left(\Theta(2^{w/2})\right){% endlatex %}
+$$\left(\Theta(2^{w/2})\right)$$
 amount of memory. Instead, it is more practical to combine the idea with
 [universal hashing]({% link _posts/2020-05-21-hashing.md %}) to get a randomized algorithm with that **expected** time, and linear space.
 
@@ -120,27 +120,27 @@ final sorted answer:
 Steps 1, 2, 4, 5 take linear time. Step 3 requires recursive sorting of numbers that are half
 as long.
 
-If we let {% latex %}T(n, b){% endlatex %} be the time to sort n b-bit numbers, we get the recurrence:
+If we let $$T(n, b)$$ be the time to sort n b-bit numbers, we get the recurrence:
 
-{% latex centred %}
+$$
 T(n, b) = T(n, \lceil b/2 \rceil) + O(n)
-{% endlatex %}
+$$
 
-We stop the recursion once the numbers have at most {% latex %}\log n{% endlatex %} bits. At that
+We stop the recursion once the numbers have at most $$\log n$$ bits. At that
 point, we can just sort in linear time by counting each value. Thus:
 
-{% latex centred %}
+$$
 T(n, \lfloor \log n \rfloor) = O(n)
-{% endlatex %}
+$$
 
-We start with w bits each, and want to get to {% latex %}\log n{% endlatex %} bits each. Each level of recursion
-halves the number of bits, so we need {% latex %}\log (w / \log n){% endlatex %} levels.
+We start with w bits each, and want to get to $$\log n$$ bits each. Each level of recursion
+halves the number of bits, so we need $$\log (w / \log n)$$ levels.
 
 Thus the total time complexity is:
 
-{% latex centred %}
+$$
 O\left(n + n \log\frac{w}{\log n}\right)
-{% endlatex %}
+$$
 
 ## References
 
