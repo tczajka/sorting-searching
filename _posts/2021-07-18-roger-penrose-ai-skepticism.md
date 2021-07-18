@@ -2,7 +2,7 @@
 title: "Roger Penrose's AI skepticism"
 ---
 
-Despite recent advances in Artificial Intelligence, I sometimes meet with the claim that while computers
+Despite recent advances in Artificial Intelligence, I sometimes meet the claim that while computers
 can do many tasks well, human-level AI is not possible for fundamental reasons. Skeptics claim
 that computers can never be as smart, creative, generally intelligent as humans.
 
@@ -236,7 +236,7 @@ The question of whether a given set of polyominoes can be used to tile the plane
 tile the plane using them.
 
 Penrose then presents a set of 3 polyominoes that can be used to  tile the whole plane, but in a non-trivial
-way. It's an example of a so called "Penrose tiling", Penrose having done a lot of study of these kind of tilings.
+way. It's an example of a so called "Penrose tiling", Penrose having done a lot of study of this kind of tilings.
 
 The suggestion here seems to be this is an example of something Penrose can do which computers cannot do. But again this argument doesn't work!
 
