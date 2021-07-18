@@ -6,7 +6,7 @@ Despite recent advances in Artificial Intelligence, I sometimes meet the claim t
 can do many tasks well, human-level AI is not possible for fundamental reasons. Skeptics claim
 that computers can never be as smart, creative, generally intelligent as humans.
 
-Accomplished physicist Roger Penrose has been very outspoken about his AI skepticism. I once had
+Accomplished mathematician and physicist Roger Penrose has been very outspoken about his AI skepticism. I once had
 the priviledge of attending a talk he gave on the subject. Here is a presentation he gave in 2020 with
 a very similar structure.
 
