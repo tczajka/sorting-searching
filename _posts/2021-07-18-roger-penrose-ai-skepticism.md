@@ -2,7 +2,7 @@
 title: "Roger Penrose's AI skepticism"
 ---
 
-Despite recent advances in Artificial Intelligence, I sometimes meet the claim that while computers
+Despite recent advances in Artificial Intelligence, I sometimes encounter the claim that while computers
 can do many tasks well, human-level AI is not possible for fundamental reasons. Skeptics claim
 that computers can never be as smart, creative, generally intelligent as humans.
 
