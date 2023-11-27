@@ -1,6 +1,6 @@
 #include <bitset>
+#include <cstdlib>
 #include <iostream>
-#include <random>
 
 constexpr int max_n = 700;
 constexpr int iterations = 1000;
@@ -10,7 +10,7 @@ std::bitset<max_n> matrix[max_n];
 void gen_random_matrix(const int n) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            matrix[i][j] = random() % 2;
+            matrix[i][j] = rand() % 2;
         }
     }
 }
