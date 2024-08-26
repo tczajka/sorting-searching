@@ -331,7 +331,7 @@ $$
 $$
 
 Is this true? It's not always true! What we wrote here is precisely the definition of continuity
-of $$f$$ at the point $$(a, b, c, \ldots Some functions are not continuous!
+of $$f$$ at the point $$(a, b, c, \ldots)$$. Some functions are not continuous!
 
 Therefore the appropriate condition shouldn't have been "$$f(a, b, c, \ldots)$$ is a valid expression", it should have been "$$f$$ is continuous at $$(a, b, c, \ldots)$$".
 
