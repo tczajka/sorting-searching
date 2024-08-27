@@ -13,6 +13,7 @@ url: "https://sortingsearching.com" # the base hostname & protocol for your site
 # twitter_username: jekyllrb
 github_username:  tczajka
 facebook_username: tomek.czajka.one
+twitter_username: TCzajka
 google_analytics: UA-166046058-1
 disqus:
   shortname: sortingsearching
