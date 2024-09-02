@@ -74,7 +74,7 @@ permalink: /tczajka/
   * 1998, Troia, Portugal: [36th place](https://stats.ioinformatics.org/results/1998) (silver medal)
 
 * [CodeCup](https://www.codecup.nl/): Online board game AI tournament.
-  * 2024, Sudoku: winner
+  * 2024, Sudoku: [winner](https://archive.codecup.nl/2024/37/competition_qcomp_e308.html)
   * 2023, Entropy: [3rd place](https://archive.codecup.nl/2023/33/competition_qcomp_e307.html)
   * 2022, Spaghetti: [2nd place](https://archive.codecup.nl/2022/58/competition_qcomp_e280.html)
   * 2020, Gomoku: [winner](https://archive.codecup.nl/2020/25/competition_qcomp_e253.html)
