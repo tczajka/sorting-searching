@@ -7,6 +7,9 @@ permalink: /tczajka/
 
 ## Work Experience
 
+* 2025: Acquisition planning at [ICEYE](https://www.iceye.com/).
+* 2024: Problem set evaluation at [International Olympiad in Informatics](https://ioinformatics.org/).
+* 2022-2024: Member of the jury at [Polish collegiate programming competition](https://amppz.edu.pl/).
 * 2021: Machine learning support for Magnus Carlsen's team at
   [FIDE World Chess Championship](https://fideworldchampionship.com/), Dubai, UAE.
 * 2014−2020: Flight Software Engineer at [SpaceX](https://www.spacex.com/), Hawthorne, CA.
@@ -36,10 +39,6 @@ permalink: /tczajka/
 * 2001: Internship at [IBM T.J.Watson Research Center](https://research.ibm.com/labs/yorktown-heights),
   Hawthorne, NY.
   * Natural Language Processing.
-
-## Open source software
-
-* 2020−2023: Big integer library [ibig](https://crates.io/crates/ibig).
 
 ## Education
 
@@ -74,6 +73,7 @@ permalink: /tczajka/
   * 1998, Troia, Portugal: [36th place](https://stats.ioinformatics.org/results/1998) (silver medal)
 
 * [CodeCup](https://www.codecup.nl/): Online board game AI tournament.
+  * 2026, 0.1: [winner](https://www.codecup.nl/competition.php?comp=344), [my solution](https://github.com/tczajka/wazir-drop)
   * 2024, Sudoku: [winner](https://archive.codecup.nl/2024/37/competition_qcomp_e308.html)
   * 2023, Entropy: [3rd place](https://archive.codecup.nl/2023/33/competition_qcomp_e307.html)
   * 2022, Spaghetti: [2nd place](https://archive.codecup.nl/2022/58/competition_qcomp_e280.html)
@@ -165,6 +165,10 @@ permalink: /tczajka/
 
 * Marcel M. M. Yung, Tomasz Czajka.
   [Privacy-preserving measurements of a campaign](https://patents.google.com/patent/US9641332B1/en)
+
+## Open source software
+
+* 2020−2023: Big integer library [ibig](https://crates.io/crates/ibig).
 
 ## Programming languages experience
 
